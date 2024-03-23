@@ -13,7 +13,8 @@ void walk_dir(const std::filesystem::path& dir, const std::function<void(const s
   }
   for (const std::filesystem::directory_entry& entry : std::filesystem::recursive_directory_iterator{dir}) {
     if (entry.is_regular_file()) {
-      callback(std::filesystem::absolute(entry.path()));
+      const std::filesystem::path& file = entry.path();
+      callback(file.is_absolute() ? file : std::filesystem::absolute(file).lexically_normal());
     }
   }
 }

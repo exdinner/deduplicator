@@ -30,7 +30,7 @@ int main(int argc, const char* argv[]) {
     return 1;
   }
   if (dir.is_relative()) {
-    dir = std::filesystem::absolute(dir);
+    dir = std::filesystem::absolute(dir).lexically_normal();
   }
   dedup::util::walk_dir(dir, [](const std::filesystem::path& file) -> void {
     std::ignore = std::fprintf(stderr, "%s\n", file.c_str());

@@ -26,7 +26,9 @@ void FileStatus::refresh() {
     dir_ = "NO_STATUS";
     return;
   }
-  dir_ = std::filesystem::absolute(dir_);
+  if (!dir_.is_absolute()) {
+    dir_ = std::filesystem::absolute(dir_).lexically_normal();
+  }
   if (!std::filesystem::is_regular_file(dir_)) {
     std::ignore = std::fprintf(stderr, "failed to get info about `%s`: not a regular file\n", dir_.c_str());
     dir_ = "NO_STATUS";

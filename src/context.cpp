@@ -36,7 +36,7 @@ Context::Context() {
 [[nodiscard]] FileStatus Context::query(const std::filesystem::path& file) {
   FileStatus fs;
   db_.prepare(sql::SELECT_BY_DIR)
-    .bind(1, sqlitemm::Value::of_text(std::filesystem::absolute(file)))
+    .bind(1, sqlitemm::Value::of_text(file.is_absolute() ? file : std::filesystem::absolute(file).lexically_normal()))
     .each_row([&fs](const std::vector<sqlitemm::Value>& row) -> void {
     fs.dir_ = row[0].as<sqlitemm::Value::Text>();
     fs.size_ = row[1].as<sqlitemm::Value::Integer>();
@@ -108,8 +108,9 @@ void Context::update_different(const std::filesystem::path& file) {
   std::vector<SHA512> dup_hashes;
   db_.prepare(sql::SELECT_DUP_HASH_UNDER_DIR)
     .bind(1,
-          sqlitemm::Value::of_text(parent_dir.is_absolute() ? parent_dir.c_str()
-                                                            : std::filesystem::absolute(parent_dir).c_str()))
+          sqlitemm::Value::of_text(parent_dir.is_absolute()
+                                     ? parent_dir.c_str()
+                                     : std::filesystem::absolute(parent_dir).lexically_normal().c_str()))
     .each_row([&dup_hashes](const std::vector<sqlitemm::Value>& row) -> void {
     dup_hashes.emplace_back(blob2sha512(row[0].as<sqlitemm::Value::Blob>()));
   });
