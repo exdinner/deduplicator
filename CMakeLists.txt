@@ -6,6 +6,8 @@ project(
   DESCRIPTION "A hash and file size based de-duplication tool"
 )
 
+include(GNUInstallDirs)
+
 find_package(sqlitemm REQUIRED CONFIG)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(OPENSSL REQUIRED openssl)
@@ -28,3 +30,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 target_include_directories(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_INCLUDES})
 target_link_libraries(${PROJECT_NAME} PRIVATE sqlitemm::sqlitemm)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${OPENSSL_LIBRARIES})
+
+install(TARGETS ${PROJECT_NAME}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
