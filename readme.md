@@ -39,8 +39,8 @@ user@Machine ~ $ sh dup_files  # remove duplicated files
 
 Dependencies:
 
-- [OpenSSL](https://www.openssl.org/)
-- [sqlitemm](https://github.com/exdinner/sqlitemm)
+- [OpenSSL](https://www.openssl.org/): SHA-512 message digest
+- [sqlitemm](https://github.com/exdinner/sqlitemm): SQLite
 
 ```sh
 cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./build
