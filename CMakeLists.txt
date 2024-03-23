@@ -19,6 +19,7 @@ set(${PROJECT_NAME}_SRCS
   ${PROJECT_SOURCE_DIR}/src/file_status.cpp
   ${PROJECT_SOURCE_DIR}/src/main.cpp
   ${PROJECT_SOURCE_DIR}/src/misc.cpp
+  ${PROJECT_SOURCE_DIR}/src/util.cpp
 )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
