@@ -13,7 +13,7 @@ namespace dedup {
 
 class Context {
 public:
-  Context();
+  Context() = default;
   Context(const Context&) = delete;
   Context(Context&&) noexcept = default;
   Context& operator=(const Context&) = delete;
@@ -44,8 +44,6 @@ public:
 protected:
   /* NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables) */
   static sqlitemm::DB db_;
-
-  static void check_table_();
 };
 
 } // namespace dedup

@@ -29,10 +29,6 @@ SHA512 blob2sha512(const sqlitemm::Value::Blob& blob) {
   return sha;
 }
 
-Context::Context() {
-  check_table_();
-}
-
 [[nodiscard]] FileStatus Context::query(const std::filesystem::path& file) {
   FileStatus fs;
   db_.prepare(sql::SELECT_BY_DIR)
@@ -128,7 +124,7 @@ void Context::update_different(const std::filesystem::path& file) {
 }
 
 /* NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables) */
-sqlitemm::DB Context::db_{[]() -> std::filesystem::path {
+sqlitemm::DB Context::db_{[]() -> sqlitemm::DB {
   // `~/.config/deduplicator/db`
   std::optional<std::filesystem::path> home_dir_opt = get_home_dir();
   if (!home_dir_opt.has_value()) {
@@ -147,17 +143,15 @@ sqlitemm::DB Context::db_{[]() -> std::filesystem::path {
       exit_safe(-1);
     }
   }
-  return db_dir / "db";
-}()};
-
-void Context::check_table_() {
-  std::vector<std::string> table_names = db_.table_names();
+  sqlitemm::DB db{db_dir / "db"};
+  std::vector<std::string> table_names = db.table_names();
   bool table_exists = std::any_of(table_names.begin(), table_names.end(), [](const std::string& name) -> bool {
     return name == "dedup";
   });
   if (!table_exists) {
-    db_.exec(sql::CREATE);
+    db.exec(sql::CREATE);
   }
-}
+  return db;
+}()};
 
 } // namespace dedup
