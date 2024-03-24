@@ -19,4 +19,18 @@ void walk_dir(const std::filesystem::path& dir, const std::function<void(const s
   }
 }
 
+std::string quote(std::string_view str, const char& quote, const char& escape) {
+  std::string quoted;
+  quoted.reserve(str.length() + 8);
+  quoted.push_back(quote);
+  for (const char& c : str) {
+    if (c == quote) {
+      quoted.push_back(escape);
+    }
+    quoted.push_back(c);
+  }
+  quoted.push_back(quote);
+  return quoted;
+}
+
 } // namespace dedup::util

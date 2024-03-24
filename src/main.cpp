@@ -42,7 +42,7 @@ int main(int argc, const char* argv[]) {
     std::vector<std::string> dup_files = dedup::Context::query_dup_files_by_hash(dup_hash);
     std::printf("# ========== duplicated ==========\n");
     for (const std::string& dup_file : dup_files) {
-      std::printf("#rm %s\n", dup_file.c_str());
+      std::printf("#rm %s\n", dedup::util::quote(dup_file).c_str());
     }
     std::printf("# ================================\n\n");
   }
