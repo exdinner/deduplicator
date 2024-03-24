@@ -16,13 +16,13 @@ Example:
 ```shell
 user@Machine ~ $ deduplicator /foo/bar 2>/dev/null
 # ========== duplicated ==========
-#rm /foo/bar/a/b/baf
-#rm /foo/bar/c/baf.1
+#rm "/foo/bar/a/b/baf"
+#rm "/foo/bar/c/baf.1"
 # ================================
 
 # ========== duplicated ==========
-#rm /foo/bar/d/e/hello
-#rm /foo/bar/f/hello.0
+#rm "/foo/bar/d/e/hello"
+#rm "/foo/bar/f/hello.0"
 # ================================
 
 ```
@@ -47,3 +47,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./build
 cmake --build ./build
 cmake --install ./build
 ```
+
+## TODO
+
+- [ ] multi-thread
