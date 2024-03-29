@@ -29,6 +29,7 @@ int main(int argc, const char* argv[]) {
     print_help(argv[1]);
     return 1;
   }
+  dedup::Context::clean();
   if (dir.is_relative()) {
     dir = std::filesystem::absolute(dir).lexically_normal();
   }
@@ -40,6 +41,9 @@ int main(int argc, const char* argv[]) {
   std::vector<dedup::SHA512> dup_hashes = dedup::Context::query_dup_hashes(dir);
   for (const dedup::SHA512& dup_hash : dup_hashes) {
     std::vector<std::string> dup_files = dedup::Context::query_dup_files_by_hash(dup_hash);
+    if (dup_files.empty()) {
+      continue;
+    }
     std::printf("# ========== duplicated ==========\n");
     for (const std::string& dup_file : dup_files) {
       std::printf("#rm %s\n", dedup::util::quote(dup_file).c_str());
